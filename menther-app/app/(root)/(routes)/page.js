@@ -13,7 +13,6 @@ import {
   Grid,
   GridItem
 } from "@chakra-ui/react";
-import Logo from '../../assets/MENTHER.png';
 import {
   MdSupervisorAccount,
   MdEvent,
@@ -23,7 +22,7 @@ import {
 
 export default function Home() {
   return (
-    <Box>
+    <Box mb="8">
       <Flex
         as="header"
         alignItems="center"
@@ -31,7 +30,6 @@ export default function Home() {
         padding="1rem"
         background="black.500"
         boxShadow="md"
-        color="black"
       >
         <Flex alignItems="center">
           <Image
@@ -57,7 +55,12 @@ export default function Home() {
           <Heading as="h1" size="2xl" mb="4">
             Welcome to MentHer
           </Heading>
-          <Text fontSize="xl" fontWeight="bold" color="gray.600">
+          <Image
+            src="https://hbr.org/resources/images/article_assets/2021/12/A_Jan22_06_1329663977-01.jpg"
+            alt="MentHer Logo"
+            mb="4"
+          />
+          <Text fontSize="xl" fontWeight="bold">
             Connect with girl mentors and women professionals.
           </Text>
         </Flex>
