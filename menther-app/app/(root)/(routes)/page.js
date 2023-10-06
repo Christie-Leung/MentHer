@@ -2,14 +2,24 @@
 import { UserButton } from "@clerk/nextjs";
 import {
   Box,
+  Icon,
   Flex,
   Heading,
   Text,
   Button,
   Container,
   Image,
+  VStack,
+  Grid,
+  GridItem
 } from "@chakra-ui/react";
 import Logo from '../../assets/MENTHER.png';
+import {
+  MdSupervisorAccount,
+  MdEvent,
+  MdSchool,
+  MdFavorite,
+} from "react-icons/md";
 
 export default function Home() {
   return (
@@ -21,17 +31,18 @@ export default function Home() {
         padding="1rem"
         background="black.500"
         boxShadow="md"
+        color="black"
       >
-        <Flex
-        background="black.500"
-        padding="1rem"
-        >
+        <Flex alignItems="center">
           <Image
             src='https://via.placeholder.com/150'
             alt="MentHer Logo"
             boxSize="50px"
+            mr="2"
           />
-          <Text padding="1rem">MentHer</Text>
+          <Text fontSize="2xl" fontWeight="bold">
+            MentHer
+          </Text>
         </Flex>
         <UserButton afterSignOutUrl="/" />
       </Flex>
@@ -51,13 +62,35 @@ export default function Home() {
           </Text>
         </Flex>
 
-        <Box mb="8">
+        <VStack spacing="4" align="center">
+          <Grid
+            templateColumns="repeat(4, 1fr)"
+            gap="4"
+            mb="8"
+            textAlign="center"
+          >
+            <GridItem>
+              <Icon as={MdSupervisorAccount} boxSize="6" color="yellow.500" />
+              <Text fontWeight="bold">Find Mentors</Text>
+            </GridItem>
+            <GridItem>
+              <Icon as={MdEvent} boxSize="6" color="yellow.500" />
+              <Text fontWeight="bold">Join Events</Text>
+            </GridItem>
+            <GridItem>
+              <Icon as={MdSchool} boxSize="6" color="yellow.500" />
+              <Text fontWeight="bold">Learn & Grow</Text>
+            </GridItem>
+            <GridItem>
+              <Icon as={MdFavorite} boxSize="6" color="yellow.500" />
+              <Text fontWeight="bold">Empowerment</Text>
+            </GridItem>
+          </Grid>
           <Text fontSize="xl">
             Discover a supportive community of mentors and professionals
             dedicated to empowering girls in STEM.
           </Text>
-        </Box>
-
+        </VStack>
       </Container>
 
       <Box as="footer" textAlign="center" p="4" background="yellow.500">
