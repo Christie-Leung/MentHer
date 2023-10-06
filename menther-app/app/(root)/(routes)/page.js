@@ -97,7 +97,7 @@ export default function Home() {
       </Container>
 
       <Box as="footer" textAlign="center" p="4" background="yellow.500">
-        <Text fontSize="sm" color="black">
+        <Text fontSize="sm" >
           &copy; 2023 MentHer. All rights reserved.
         </Text>
       </Box>
