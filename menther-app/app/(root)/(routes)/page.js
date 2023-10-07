@@ -33,28 +33,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <Box mb="8">
-      <Flex
-        as="header"
-        alignItems="center"
-        justifyContent="space-between"
-        padding="1rem"
-        background="black.500"
-        boxShadow="md"
-      >
-        <Flex alignItems="center">
-          <Image
-            src='https://via.placeholder.com/150'
-            alt="MentHer Logo"
-            boxSize="50px"
-            mr="2"
-          />
-          <Text fontSize="2xl" fontWeight="bold">
-            MentHer
-          </Text>
-        </Flex>
-        <UserButton afterSignOutUrl="/" />
-      </Flex>
-
       <Container maxW="container.xl" py="8">
         <Flex
           direction="column"
