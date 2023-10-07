@@ -57,7 +57,7 @@ export default function MentorDashboard() {
     return (
         <Container maxW="container.lg" mt={8}>
             <Flex align="center">
-                <Avatar size="lg" name="John Doe" src="https://notion-avatar.vercel.app/api/img/eyJmYWNlIjo1LCJub3NlIjoyLCJtb3V0aCI6MTYsImV5ZXMiOjAsImV5ZWJyb3dzIjoxLCJnbGFzc2VzIjo5LCJoYWlyIjoyOSwiYWNjZXNzb3JpZXMiOjAsImRldGFpbHMiOjAsImJlYXJkIjowLCJmbGlwIjowLCJjb2xvciI6InJnYmEoMjU1LCAwLCAwLCAwKSIsInNoYXBlIjoibm9uZSJ9" mr={4} />
+                <Avatar size="lg" name="Jan Doe" src="https://notion-avatar.vercel.app/api/img/eyJmYWNlIjo1LCJub3NlIjoyLCJtb3V0aCI6MTYsImV5ZXMiOjAsImV5ZWJyb3dzIjoxLCJnbGFzc2VzIjo5LCJoYWlyIjoyOSwiYWNjZXNzb3JpZXMiOjAsImRldGFpbHMiOjAsImJlYXJkIjowLCJmbGlwIjowLCJjb2xvciI6InJnYmEoMjU1LCAwLCAwLCAwKSIsInNoYXBlIjoibm9uZSJ9" mr={4} />
                 <Heading as="h1" size="xl" mb={4}>
                     Mentor Dashboard
                 </Heading>
