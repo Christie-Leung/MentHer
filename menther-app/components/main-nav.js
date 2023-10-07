@@ -91,7 +91,7 @@ export function MainNav({ className, ...props }) {
                     href={dropdownItem.href}
                     className={cn(
                       "block px-4 py-2 transition-colors hover:bg-yellow-500 hover:text-black",
-                      dropdownItem.active ? "bg-gray-200" : ""
+                      dropdownItem.active ? "bg-yellow-200 text-black" : ""
                     )}
                   >
                     {dropdownItem.label}
