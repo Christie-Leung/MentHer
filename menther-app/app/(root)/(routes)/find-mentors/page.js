@@ -41,7 +41,7 @@ const FindMentorsPage = ({ params }) => {
   return (
     <Container maxW="container.xl" py="8">
       <Heading as="h1" size="2xl" mb="4">
-        Find Women Mentors
+        Find Female Mentors
       </Heading>
       <SimpleGrid columns={3} spacing={4}>
         {mentors.map((mentor, index) => (
