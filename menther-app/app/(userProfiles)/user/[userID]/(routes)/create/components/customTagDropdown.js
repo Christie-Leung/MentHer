@@ -7,12 +7,30 @@ import {
   AutoCompleteList,
   AutoCompleteTag,
 } from "@choc-ui/chakra-autocomplete";
+import { LoadBundleTask } from "firebase/firestore";
+import { useField, useFormikContext } from "formik";
 
-const TagAutoComplete = ({id, label, fields}) => {
+
+
+const TagAutoComplete = React.forwardRef((props, ref) => {
+
+  const { name, label, children, fields, ...rest } = props;
+  const [field, {error, touched}] = useField(name);
+  const { isSubmitting } = useFormikContext();
+
+  let isChecked;
+  if (field.value instanceof Array) {
+    isChecked = field.value.includes(props.value) ?? false;
+  }
+  
+
   return (
-    <FormControl id={id}>
-        <FormLabel>{label}</FormLabel>
-        <AutoComplete openOnFocus multiple onChange={vals => console.log(vals)}>
+    <FormControl name={name} label={label}>
+      <FormLabel>{label}</FormLabel>
+        <AutoComplete openOnFocus multiple ref={ref} onChange={(value) => {
+          field.value = value;
+          console.log(field.value)
+        }}>
           <AutoCompleteInput variant="outline">
             {({ tags }) =>
               tags.map((tag, id) => (
@@ -40,6 +58,6 @@ const TagAutoComplete = ({id, label, fields}) => {
         </AutoComplete>
       </FormControl>
   )
-}
+});
  
 export default TagAutoComplete;
