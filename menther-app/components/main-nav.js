@@ -33,6 +33,16 @@ export function MainNav({
       label: 'Learn & Grow',
       active: pathname === `/resources`,
     },
+    {
+      href: `/mentor-dashboard`,
+      label: 'Mentor Dashboard',
+      active: pathname === `/mentor-dashboard`,
+    },
+    {
+      href: `/mentee-dashboard`,
+      label: 'Mente Dashboard',
+      active: pathname === `/mentee-dashboard`,
+    },
   ];
   return (
     <nav
