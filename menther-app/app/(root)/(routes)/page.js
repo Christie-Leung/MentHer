@@ -29,6 +29,7 @@ import {
 import { FaHeart, FaTwitter, FaFacebook, FaLinkedin } from "react-icons/fa";
 import { AiOutlineMail } from "react-icons/ai";
 import Link from "next/link";
+import Logo from '../../assets/MENTHER.png';
 
 export default function Home() {
   return (
