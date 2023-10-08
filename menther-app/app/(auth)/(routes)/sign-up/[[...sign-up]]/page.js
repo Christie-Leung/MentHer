@@ -1,7 +1,7 @@
 import { SignUp } from "@clerk/nextjs";
 
 export async function generateStaticParams() {
-  return [1];
+  return [{ [sign-up]: 1}];
 }
 
 export default function Page({ params }) {
