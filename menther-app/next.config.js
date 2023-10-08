@@ -1,4 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {}
+const isGithubActions = process.env.GITHUB_ACTIONS || false
 
-module.exports = nextConfig
+let assetPrefix = ''
+let basePath = '/'
+
+if (isGithubActions) {
+  // trim off `<owner>/`
+  const repo = process.env.GITHUB_REPOSITORY.replace(/.*?\//, '')
+
+  assetPrefix = `/${repo}/menther-app`
+  basePath = `/${repo}/menther-app`
+}
+
+module.exports = {
+  ...nextConfig,
+  images: {
+    loader: 'imgix',
+    path: 'the "domain" of your Imigix source',
+  },
+}

@@ -22,7 +22,7 @@ const Navbar = () => {
       >
       <div className="w-full flex h-16 items-center px-4">
         <Image
-          src='https://via.placeholder.com/150'
+          src='/mentHer.png'
           alt="MentHer Logo"
           boxSize="50px"
           mr="2"
