@@ -49,7 +49,7 @@ const MenteeDashboard = ({ user }) => {
                     <Text mb={2}>
                         Explore your courses and start learning.
                     </Text>
-                    <Link href="resources">
+                    <Link href="../resources">
                         <Button colorScheme="blue">Explore Courses</Button>
                     </Link>
                 </Box>
@@ -66,7 +66,7 @@ const MenteeDashboard = ({ user }) => {
                     <Text mb={2}>
                         Connect with your mentors and seek advice.
                     </Text>
-                    <Link href="find-mentors">
+                    <Link href="../find-mentors">
                         <Button colorScheme="green">Connect with Mentors</Button>
                     </Link>
                 </Box>
