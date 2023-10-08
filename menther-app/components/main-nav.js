@@ -44,21 +44,9 @@ export function MainNav({ className, ...props }) {
       active: pathname === `/resources`,
     },
     {
-      label: "Dashboards",
-      active: false,
-      dropdown: true,
-      items: [
-        {
-          href: `/mentor-dashboard`,
-          label: "Mentor",
-          active: pathname === `/mentor-dashboard`,
-        },
-        {
-          href: `/mentee-dashboard`,
-          label: "Mentee",
-          active: pathname === `/mentee-dashboard`,
-        },
-      ],
+      href: `/faq`,
+      label: "FAQ",
+      active: pathname === `/faq`,
     },
   ];
   return (
@@ -116,3 +104,23 @@ export function MainNav({ className, ...props }) {
     </nav>
   );
 }
+
+/*
+{
+      label: "Dashboards",
+      active: false,
+      dropdown: true,
+      items: [
+        {
+          href: `/mentor-dashboard`,
+          label: "Mentor",
+          active: pathname === `/mentor-dashboard`,
+        },
+        {
+          href: `/mentee-dashboard`,
+          label: "Mentee",
+          active: pathname === `/mentee-dashboard`,
+        },
+      ],
+    }
+    */

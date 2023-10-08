@@ -8,10 +8,11 @@ const createProfile = async ({ params }) => {
 
   return (
     <Form 
+      userId={userId}
       firstName={user.firstName} 
       lastName={user.lastName} 
       email={user.emailAddresses[0]?.emailAddress}
-      imageURL={user.imageURL}
+      imageURL={user.imageUrl}
     />
   );
 };

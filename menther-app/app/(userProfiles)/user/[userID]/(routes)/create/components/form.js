@@ -1,14 +1,15 @@
 "use client";
 
 import {
+  Avatar,
   Box,
   Button,
-  ButtonGroup, Divider, FormLabel, Heading, StepSeparator, Text,
+  ButtonGroup, Divider, Heading, StepSeparator, Text,
 } from "@chakra-ui/react";
-import { Formik, useField } from "formik";
+import { Field, FieldArray, Formik } from "formik";
 import {
   FormControl,
-  InputControl, PercentComplete, ResetButton, SelectControl, SubmitButton, TextareaControl,
+  InputControl, SelectControl, SubmitButton, TextareaControl,
 } from "formik-chakra-ui";
 import { Stack, Step, StepIcon, StepIndicator, StepStatus, Stepper, useSteps } from "@chakra-ui/react";
 import {
@@ -19,16 +20,19 @@ import {
   AutoCompleteTag,
 } from "@choc-ui/chakra-autocomplete";
 import * as React from "react";
-import { useState } from "react";
 import * as Yup from "yup";
-import TagAutoComplete from "./customTagDropdown";
+import { db } from "@/firebase-config";
+import { doc, setDoc } from "firebase/firestore";
+import { BsTrashFill, BsFillPlusCircleFill } from "react-icons/bs"
+import { redirect } from "next/navigation";
 
-const Form = ({ firstName, lastName, email, imageURL }) => {
+const Form = ({ userId, firstName, lastName, email, imageURL }) => {
 
   const initialValues = {
     firstName: firstName,
     lastName: lastName,
     email: email,
+    imageURL: imageURL,
     pronouns: "",
     bio: "",
     interests: [],
@@ -37,11 +41,26 @@ const Form = ({ firstName, lastName, email, imageURL }) => {
     website: "",
     others: "",
     role: [],
-    employer: "",
+    workExperiences: [{
+      employer: "",
+      jobTitle: "",
+      description: "",
+      startDate: "",
+      endDate: "",
+    }],
     groups: [],
     companyInterests: [],
-    mentorshipLevel: ""
+    mentorshipLevel: "",
+    interestedCompanies: []
   };
+
+  const emptyExperience = {
+    employer: "",
+    jobTitle: "",
+    description: "",
+    startDate: "",
+    endDate: "",
+  }
 
   const interestFields = [
     "Full-Stack",
@@ -55,15 +74,17 @@ const Form = ({ firstName, lastName, email, imageURL }) => {
 
   const mentorshipRole = [ "Mentee", "Mentor"]
 
+  const companies = ["Google", "Meta", "Microsoft", "Apple", "Tesla", "Slack", "LinkedIn", "Uber", "Duolingo"]
+
   const groups = ["MLH", "Grace Hopper Celebration", "Rewriting the Code"]
   const steps = [
     { title: 'First', description: 'Contact Info' },
     { title: 'Second', description: 'Mentee / Mentor Info' },
-    { title: 'Third', description: 'Additional Info' },
+    { title: 'Third', description: 'Confirmation' },
   ]
   
   const { activeStep, setActiveStep } = useSteps({
-    index: 1,
+    index: 0,
     count: steps.length,
   })
 
@@ -75,15 +96,19 @@ const Form = ({ firstName, lastName, email, imageURL }) => {
     email: Yup.string().required(),
   });
 
-  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-  const onSubmit = (values) => {
-    sleep(300).then(() => {
-      window.alert(JSON.stringify(values, null, 2));
-    });
+  const onSubmit = async (values) => {
+    window.alert(JSON.stringify(values, null, 2))
+    window.alert("trying to submit...")
+    try {
+      await setDoc(doc(db, "userProfile", userId), values);
+      window.alert("submitted")
+      redirect(`/user/${userId}`);
+    } catch (error) {
+      console.log(error)
+      window.alert("Error occurred!", error)
+    }
+    
   };
-
-  const [role, setRole] = useState([]);
 
   return (
     <div className="p-10 m-auto space-y-2">
@@ -108,21 +133,27 @@ const Form = ({ firstName, lastName, email, imageURL }) => {
       validationSchema={validationSchema}
     >
       {({ handleSubmit, values, errors }) => (
-        <>
+        <Box
+          as="form"
+          onSubmit={handleSubmit}
+        >
         {activeStep == 0 ? <>
-          <div className="grid grid-cols-2 gap-x-8 gap-y-4 pb-8">
+          <div className="grid grid-cols-3 gap-x-8 gap-y-4 pb-8 justify-items-center items-end">
             <InputControl name="firstName" label="First Name" />
             <InputControl name="lastName" label="Last Name" />
+            <Avatar size='2xl' name={firstName} src={imageURL} />
+          </div>
+          <div className="grid grid-cols-2 gap-x-8 gap-y-4 pb-8">
             <InputControl name="email" inputProps={{ type: "email" }} label="Email Address" />
             <SelectControl
               name="pronouns"
               label="Pronouns"
               selectProps={{ placeholder: "Select pronouns" }}
             >
-              <option value="option1">she/her</option>
-              <option value="option2">he/him</option>
-              <option value="option3">they/them</option>
-              <option value="option3">other</option>
+              <option value="she/her">she/her</option>
+              <option value="he/him">he/him</option>
+              <option value="they/them">they/them</option>
+              <option value="other">other</option>
             </SelectControl>
           </div>
           <TextareaControl name="bio" label="About yourself" />
@@ -195,14 +226,41 @@ const Form = ({ firstName, lastName, email, imageURL }) => {
             <InputControl name="website" label="Personal Website/Portfolio" />
             <InputControl name="others" label="Others" />
           </div>
-          <ButtonGroup>
-            <Button colorScheme="yellow" onClick={() => setActiveStep(activeStep+1)}>Next</Button>
-            <ResetButton>Reset</ResetButton>
-          </ButtonGroup>
+          <div className="grid justify-end items-end space-x-4">
+              <Button colorScheme="yellow" onClick={() => setActiveStep(activeStep+1)}>Next</Button>
+          </div>
         </> : <>
         { activeStep == 1 ? <>
+          { values.role.includes("Mentor") && <>
+
           <Heading as="h4" size="md">Work Experience</Heading>
-          <InputControl name="employer" label="Employer" />
+          <FieldArray name="workExperiences">
+            {({ insert, remove, push }) => (
+              <div>
+                {values.workExperiences.map((workExperience, index) => (
+                  <>
+                  <div className="grid grid-cols-2 gap-x-8 gap-y-4 pb-2">
+                    <InputControl name={`workExperiences.${index}.employer`} label="Employer" />
+                    <InputControl name={`workExperiences.${index}.jobTitle`} label="Job Title" />
+                    <FormControl name={`workExperiences.${index}.startDate`} label="Start Date">
+                      <Field type="date" name={`workExperiences.${index}.startDate`} />
+                    </FormControl>
+                    <FormControl name={`workExperiences.${index}.endDate`} label="End Date">
+                      <Field type="date" name={`workExperiences.${index}.endDate`}/>
+                    </FormControl>
+                    <TextareaControl name={`workExperiences.${index}.description`} label="Job Description" />
+                    <div className="grid align-bottom justify-end items-end">
+                      <Button colorScheme="red" rightIcon={<BsTrashFill />} onClick={() => remove(index)}>Delete</Button>
+                    </div>
+                  </div>
+                  </>
+                ))}
+                <div className="grid align-bottom justify-end items-end">
+                  <Button colorScheme="teal" rightIcon={<BsFillPlusCircleFill />} onClick={() => push(emptyExperience)}>Add Experience</Button>
+                </div>
+              </div>
+            )}
+          </FieldArray>
 
           <FormControl id="groups" name="groups" label="Affliated Groups">
             <AutoComplete openOnFocus multiple onChange={(value) => values.groups = value}>
@@ -232,33 +290,71 @@ const Form = ({ firstName, lastName, email, imageURL }) => {
               </AutoCompleteList>
             </AutoComplete>
           </FormControl>
+          </>}
+          { values.role.includes("Mentee") && <>
+            <FormControl id="interestedCompanies" name="interestedCompanies" label="Companies of Interest">
+              <AutoComplete openOnFocus multiple onChange={(value) => values.interestedCompanies = value}>
+                <AutoCompleteInput variant="outline">
+                  {({ tags }) =>
+                    tags.map((tag, id) => (
+                      <AutoCompleteTag
+                        key={id}
+                        label={tag.label}
+                        onRemove={tag.onRemove}
+                      />
+                    ))
+                  }
+                </AutoCompleteInput>
+                <AutoCompleteList>
+                  {companies.map((field, id) => (
+                    <AutoCompleteItem
+                      key={`option-${id}`}
+                      value={field}
+                      textTransform="capitalize"
+                      _selected={{ bg: "whiteAlpha.50" }}
+                      _focus={{ bg: "whiteAlpha.100" }}
+                    >
+                      {field}
+                    </AutoCompleteItem>
+                  ))}
+                </AutoCompleteList>
+              </AutoComplete>
+            </FormControl>
+          </>}
 
           <SelectControl
             name="mentorshipLevel"
             label="Profession Level"
             selectProps={{ placeholder: "Profession Level" }}
           >
-            <option value="option1">Student</option>
-            <option value="option2">Entry-Level</option>
-            <option value="option3">Mid-Level</option>
-            <option value="option3">Senior</option>
+            <option value="Student">Student</option>
+            <option value="Entry-Level">Entry-Level</option>
+            <option value="Mid-Level">Mid-Level</option>
+            <option value="Senior">Senior</option>
           </SelectControl>
 
-          <ButtonGroup>
-            <Button colorScheme="yellow" variant="outline" onClick={() => setActiveStep(activeStep-1)}>Back</Button>
-            <Button colorScheme="yellow" onClick={() => setActiveStep(activeStep+1)}>Next</Button>
-            <ResetButton>Reset</ResetButton>
-          </ButtonGroup>
+          
+          <div className="grid justify-end items-end space-x-4">
+            <ButtonGroup>
+              <Button colorScheme="yellow" variant="outline" onClick={() => setActiveStep(activeStep-1)}>Back</Button>
+              <Button colorScheme="yellow" onClick={() => setActiveStep(activeStep+1)}>Next</Button>
+            </ButtonGroup>
+          </div>
         
         </> : <>
+
+          <Box as="pre" marginY={10}>
+            {JSON.stringify(values, null, 2)}
+          </Box>
         
-        <ButtonGroup>
-            <Button colorScheme="yellow" variant="outline" onClick={() => setActiveStep(activeStep-1)}>Back</Button>
-            <SubmitButton>Submit</SubmitButton>
-            <ResetButton>Reset</ResetButton>
-          </ButtonGroup>
+          <div className="grid justify-end items-end space-x-4">
+            <ButtonGroup>
+              <Button colorScheme="yellow" variant="outline" onClick={() => setActiveStep(activeStep-1)}>Back</Button>
+              <SubmitButton>Submit</SubmitButton>
+            </ButtonGroup>
+          </div>
         </> }</>}
-        </>
+        </Box>
       )}
     </Formik>
     </div>

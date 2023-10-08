@@ -1,9 +1,12 @@
-"use client"
+
 import { db } from "@/firebase-config";
 import { auth } from "@clerk/nextjs"
-import { collection, doc, getDoc, query } from "firebase/firestore";
-import { redirect, useParams } from "next/navigation";
-// TODO: Profile Dashboard (takes in the userID param)
+import { doc, getDoc } from "firebase/firestore";
+import { redirect } from "next/navigation";
+import MentorDashboard from "./components/mentor-dashboard";
+import MenteeDashboard from "./components/mentee-dashboard";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import BasicProfile from "./components/basic-info"
 const UserProfile = async ({ params }) => {
 
   const { userId } = auth();
@@ -15,11 +18,33 @@ const UserProfile = async ({ params }) => {
     console.log("does not exist!")
     redirect(`/user/${userId}/create`)
   }
-  console.log(userProfileSnap.data());
+
+  const user = userProfileSnap.data();
+
   return ( 
-    <>
-    <p>{userProfileSnap.data()}</p>
-    </>
+    <div className="p-20 m-auto space-y-2">
+      
+      <BasicProfile user={user} />
+      { user.role.length > 1 ? <>
+        <Tabs isFitted variant='enclosed'>
+          <TabList mb='1em'>
+            <Tab>Mentee</Tab>
+            <Tab>Mentor</Tab>
+          </TabList>
+          <TabPanels>
+            <TabPanel>
+              <MenteeDashboard user={user} />
+            </TabPanel>
+            <TabPanel>
+              <MentorDashboard user={user} />
+            </TabPanel>
+          </TabPanels>
+        </Tabs>
+      </> : <>
+      {user.role.includes("Mentee") && <MenteeDashboard user={user}/>}
+      {user.role.includes("Mentor") && <MentorDashboard user={user}/>}
+      </>}
+    </div>
   );
 }
  
