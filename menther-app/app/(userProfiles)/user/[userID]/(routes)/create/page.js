@@ -2,6 +2,11 @@ import { auth, clerkClient } from "@clerk/nextjs";
 import Form from "./components/form";
 import * as React from "react";
 
+export async function generateStaticParams() {
+  return 1;
+}
+
+
 const createProfile = async ({ params }) => {
   const { userId } = auth();
   const user = await clerkClient.users.getUser(userId);
