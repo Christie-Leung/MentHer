@@ -3,7 +3,7 @@ import Form from "./components/form";
 import * as React from "react";
 
 export async function generateStaticParams() {
-  return 1;
+  return [1];
 }
 
 

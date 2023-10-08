@@ -9,7 +9,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import BasicProfile from "./components/basic-info"
 
 export async function generateStaticParams() {
-  return 1;
+  return [1];
 }
 
 const UserProfile = async ({ params }) => {
