@@ -17,6 +17,6 @@ module.exports = {
   ...nextConfig,
   images: {
     loader: 'imgix',
-    path: 'the "domain" of your Imigix source',
+    path: 'christie.imgix.net',
   },
 }
