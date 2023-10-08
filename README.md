@@ -6,3 +6,6 @@ MentHer is a virtual mentorship platform that aims to connect girls interested i
 2. cd into folder
 3. `npm i @chakra-ui/react @chakra-ui/next-js @emotion/react @emotion/styled framer-motion`
 
+## Tools and Technologies used
+
+ <img src="https://skillicons.dev/icons?i=github,git,next,firebase,vscode"/>
