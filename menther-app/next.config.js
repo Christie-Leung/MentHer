@@ -1,7 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  output: 'export',
-}
+const nextConfig = {}
 const isGithubActions = process.env.GITHUB_ACTIONS || false
 
 let assetPrefix = ''

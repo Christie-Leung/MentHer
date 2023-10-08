@@ -7,10 +7,6 @@ const Navbar = () => {
 
   const { userId } = auth();
 
-  const onLogin = () => {
-    redirect("/login")
-  }
-
   return (
     <Flex
         as="header"
