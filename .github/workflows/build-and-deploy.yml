@@ -9,6 +9,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./menther-app/
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -16,6 +19,7 @@ jobs:
           # update the Node version to meet your needs
           node-version: 16
           cache: npm
+          cache-dependency-path: menther-app/package-lock.json
       - name: Build
         run: |
           npm ci
